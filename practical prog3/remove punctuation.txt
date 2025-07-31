@@ -1,0 +1,7 @@
+import string
+def remove_punctuation(text):
+    return ''.join(char for char in text if char not in string.punctuation)
+input_str = "Hello, world! How's everything going?"
+cleaned_str = remove_punctuation(input_str)
+print("Original:", input_str)
+print("Without punctuation:", cleaned_str)

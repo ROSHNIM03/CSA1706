@@ -1,0 +1,18 @@
+x = 0 
+y = 0 
+steps = []
+while True:
+    if x == 2 or y == 2:
+        steps.append((x, y))
+        break
+    if x == 0:
+        x = 4  # Fill jug 1
+    elif y == 3:
+        y = 0  # Empty jug 2
+    else:
+        transfer = min(x, 3 - y)
+        x -= transfer
+        y += transfer
+    steps.append((x, y))
+for i, step in enumerate(steps):
+    print(f"Step {i+1}: Jug1 = {step[0]}, Jug2 = {step[1]}")
