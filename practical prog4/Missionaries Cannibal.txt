@@ -1,0 +1,36 @@
+from collections import deque
+def is_valid(m, c):
+    return (m == 0 or m >= c) and (3 - m == 0 or (3 - m) >= (3 - c))
+def get_successors(state):
+    m, c, b = state
+    moves = [(1,0),(2,0),(0,1),(0,2),(1,1)]
+    successors = []
+    for dm, dc in moves:
+        if b == 1:  # boat on left
+            new_m, new_c = m - dm, c - dc
+            new_b = 0
+        else:       # boat on right
+            new_m, new_c = m + dm, c + dc
+            new_b = 1
+        if 0 <= new_m <= 3 and 0 <= new_c <= 3:
+            if is_valid(new_m, new_c):
+                successors.append((new_m, new_c, new_b))
+    return successors
+def solve():
+    start = (3, 3, 1)
+    goal = (0, 0, 0)
+    queue = deque([(start, [])])
+    visited = set()
+    while queue:
+        state, path = queue.popleft()
+        if state in visited:
+            continue
+        visited.add(state)
+
+        if state == goal:
+            for step in path + [state]:
+                print(step)
+            return
+        for next_state in get_successors(state):
+            queue.append((next_state, path + [state]))
+solve()

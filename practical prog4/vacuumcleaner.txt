@@ -1,0 +1,21 @@
+def vacuum_cleaner(env, location):
+    steps = []
+    while "Dirty" in env.values():
+        steps.append(f"Vacuum is at Room {location}")
+        if env[location] == "Dirty":
+            env[location] = "Clean"
+            steps.append(f"Cleaned Room {location}")
+        else:
+            steps.append(f"Room {location} already clean")
+        location = "B" if location == "A" else "A"
+        steps.append(f"Moved to Room {location}")
+    steps.append("All rooms are clean!")
+    return steps
+environment = {
+    "A": "Dirty",
+    "B": "Dirty"
+}
+start_location = "A"
+result = vacuum_cleaner(environment, start_location)
+for action in result:
+    print(action)
