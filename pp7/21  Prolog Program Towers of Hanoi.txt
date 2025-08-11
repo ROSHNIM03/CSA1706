@@ -1,0 +1,14 @@
+21 : Prolog Program: Towers of Hanoi
+
+% hanoi(N, Source, Target, Auxiliary)
+% Move N disks from Source to Target using Auxiliary
+
+hanoi(1, Source, Target, _) :-
+    format('Move disk 1 from ~w to ~w.~n', [Source, Target]).
+
+hanoi(N, Source, Target, Auxiliary) :-
+    N > 1,
+    M is N - 1,
+    hanoi(M, Source, Auxiliary, Target),          % Step 1: Move N-1 disks to auxiliary
+    format('Move disk ~w from ~w to ~w.~n', [N, Source, Target]),  % Step 2: Move largest disk to target
+    hanoi(M, Auxiliary, Target, Source).          % Step 3: Move N-1 disks to target

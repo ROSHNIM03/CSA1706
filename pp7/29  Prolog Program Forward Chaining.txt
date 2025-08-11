@@ -1,0 +1,54 @@
+29 : Prolog Program: Forward Chaining
+
+
+% --- Knowledge base: facts and rules ---
+
+% Initial facts
+fact(mammal(dog)).
+fact(mammal(cat)).
+fact(bird(sparrow)).
+fact(bird(eagle)).
+
+% Rules: If mammal(X) then animal(X)
+rule(animal(X)) :-
+    fact(mammal(X)).
+
+% If bird(X) then animal(X)
+rule(animal(X)) :-
+    fact(bird(X)).
+
+% If animal(X) and can_fly(X) then flying_animal(X)
+fact(can_fly(sparrow)).
+fact(can_fly(eagle)).
+
+rule(flying_animal(X)) :-
+    fact(animal(X)),
+    fact(can_fly(X)).
+
+% Forward chaining engine
+
+% Infer new facts until no new facts can be added
+forward_chain :-
+    forward_chain_step, !,
+    forward_chain.
+forward_chain :-
+    write('No more facts can be inferred.'), nl.
+
+forward_chain_step :-
+    rule(NewFact),
+    \+ fact(NewFact),       % If NewFact is not already known
+    assertz(fact(NewFact)), % Add NewFact to facts
+    format('Inferred: ~w~n', [NewFact]),
+    !.
+
+% Query to list all known facts
+list_facts :-
+    fact(F),
+    format('Fact: ~w~n', [F]),
+    fail.
+list_facts.
+
+% Example query to check if X is an animal
+is_animal(X) :-
+    fact(animal(X)),
+    format('~w is an animal.~n', [X]).

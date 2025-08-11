@@ -1,0 +1,33 @@
+24 : Prolog Program: Diet Suggestion Based on Disease
+
+% --- Facts: disease(DiseaseName), diet_for(Disease, DietType), advice(DietType, Advice) ---
+
+disease(diabetes).
+disease(hypertension).
+disease(obesity).
+disease(celiac).
+disease(heart_disease).
+
+diet_for(diabetes, low_sugar).
+diet_for(hypertension, low_sodium).
+diet_for(obesity, low_calorie).
+diet_for(celiac, gluten_free).
+diet_for(heart_disease, low_fat).
+
+advice(low_sugar, 'Avoid sugary foods, prefer whole grains and vegetables.').
+advice(low_sodium, 'Reduce salt intake, eat fresh fruits and vegetables.').
+advice(low_calorie, 'Control portion sizes and avoid high-fat foods.').
+advice(gluten_free, 'Avoid wheat, barley, and rye products.').
+advice(low_fat, 'Limit saturated fats, increase intake of healthy fats like omega-3.').
+
+% --- Rule to suggest diet based on disease ---
+
+suggest_diet(Disease) :-
+    disease(Disease),
+    diet_for(Disease, Diet),
+    advice(Diet, Advice),
+    format('For ~w, recommended diet is ~w.~nAdvice: ~w~n', [Disease, Diet, Advice]).
+
+suggest_diet(Disease) :-
+    \+ disease(Disease),
+    format('Sorry, no diet information available for ~w.~n', [Disease]).

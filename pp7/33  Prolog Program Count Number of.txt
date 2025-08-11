@@ -1,0 +1,20 @@
+33 : Prolog Program: Count Number of Vowels
+
+% Define vowels (lowercase)
+vowel(a).
+vowel(e).
+vowel(i).
+vowel(o).
+vowel(u).
+
+% count_vowels(+ListOfChars, -Count)
+count_vowels([], 0).
+count_vowels([H|T], Count) :-
+    count_vowels(T, RestCount),
+    ( vowel(H) -> Count is RestCount + 1 ; Count = RestCount ).
+
+% Helper to convert string (atom) to list of lowercase chars and count vowels
+count_vowels_in_string(String, Count) :-
+    atom_chars(String, CharList),
+    maplist(downcase_atom, CharList, LowerChars),
+    count_vowels(LowerChars, Count).

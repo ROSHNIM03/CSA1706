@@ -1,0 +1,21 @@
+32 : Prolog Program: Pattern Matching Example
+
+
+% Example facts representing simple patterns
+pattern(cat).
+pattern(dog).
+pattern(bird).
+pattern(fish).
+
+% match_pattern(Pattern) succeeds if Pattern matches any known pattern
+match_pattern(Pattern) :-
+    pattern(Pattern).
+
+% match_list_pattern(List) succeeds if List matches a pattern list with head 'cat'
+match_list_pattern([cat | Tail]) :-
+    write('List starts with cat, tail is: '), write(Tail), nl.
+
+% match_list_pattern(List) succeeds if List matches a pattern list with any head and tail ending with 'dog'
+match_list_pattern(List) :-
+    append(_, [dog], List),
+    write('List ends with dog: '), write(List), nl.

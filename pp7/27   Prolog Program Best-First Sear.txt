@@ -1,0 +1,70 @@
+27 :  Prolog Program: Best-First Search
+
+% --- Sample Graph with edges and costs ---
+edge(a, b, 1).
+edge(a, c, 4).
+edge(b, d, 2).
+edge(c, d, 5).
+edge(b, e, 12).
+edge(d, e, 3).
+
+% --- Heuristic values for nodes (estimation to goal 'e') ---
+heuristic(a, 7).
+heuristic(b, 6).
+heuristic(c, 2).
+heuristic(d, 1).
+heuristic(e, 0).
+
+% --- Best First Search Algorithm ---
+
+% best_first_search(Start, Goal, Path, Cost)
+best_first_search(Start, Goal, Path, Cost) :-
+    heuristic(Start, H),
+    best_first([[Start]], Goal, [Start], H, Path, Cost).
+
+% best_first(OpenList, Goal, Visited, BestHeuristic, Path, Cost)
+best_first(OpenList, Goal, _, _, Path, Cost) :-
+    OpenList = [CurrentPath|_],
+    CurrentPath = [Goal|_],
+    reverse(CurrentPath, Path),
+    path_cost(Path, Cost).
+
+best_first(OpenList, Goal, Visited, _, Path, Cost) :-
+    OpenList = [CurrentPath|RestPaths],
+    CurrentPath = [CurrentNode|_],
+
+    % Find neighbors of current node
+    findall(
+        [NextNode|CurrentPath],
+        (edge(CurrentNode, NextNode, _), \+ member(NextNode, Visited)),
+        NextPaths
+    ),
+
+    % Sort neighbors by heuristic
+    sort_paths_by_heuristic(NextPaths, SortedNextPaths),
+
+    % Add new paths to open list
+    append(SortedNextPaths, RestPaths, NewOpenList),
+
+    % Update visited nodes
+    findall(Node, (member(Path, SortedNextPaths), Path = [Node|_]), NewNodes),
+    append(Visited, NewNodes, NewVisited),
+
+    best_first(NewOpenList, Goal, NewVisited, _, Path, Cost).
+
+% Calculate path cost
+path_cost([_], 0).
+path_cost([N1, N2 | Rest], Cost) :-
+    edge(N1, N2, C),
+    path_cost([N2|Rest], RestCost),
+    Cost is C + RestCost.
+
+% Sort paths based on heuristic of the head node
+sort_paths_by_heuristic(Paths, Sorted) :-
+    map_list_to_pairs(
+        [Path, H]>>(Path = [Node|_], heuristic(Node, H)),
+        Paths,
+        Pairs
+    ),
+    keysort(Pairs, SortedPairs),
+    pairs_values(SortedPairs, Sorted).

@@ -1,0 +1,60 @@
+23 : Prolog Program: Family Tree
+
+% --- Facts: parent(Parent, Child) ---
+
+parent(john, mary).
+parent(john, tom).
+parent(susan, mary).
+parent(susan, tom).
+
+parent(mary, alice).
+parent(mary, bob).
+parent(michael, alice).
+parent(michael, bob).
+
+parent(tom, james).
+parent(linda, james).
+
+% --- Rules ---
+
+% father(F, C) - F is father of C
+father(F, C) :-
+    parent(F, C),
+    male(F).
+
+% mother(M, C) - M is mother of C
+mother(M, C) :-
+    parent(M, C),
+    female(M).
+
+% sibling(X, Y) - X and Y share at least one parent, X \= Y
+sibling(X, Y) :-
+    parent(P, X),
+    parent(P, Y),
+    X \= Y.
+
+% grandparent(GP, GC) - GP is grandparent of GC
+grandparent(GP, GC) :-
+    parent(GP, P),
+    parent(P, GC).
+
+% ancestor(Anc, Desc) - Anc is ancestor of Desc
+ancestor(Anc, Desc) :-
+    parent(Anc, Desc).
+
+ancestor(Anc, Desc) :-
+    parent(Anc, X),
+    ancestor(X, Desc).
+
+% --- Gender facts ---
+
+male(john).
+male(tom).
+male(michael).
+male(james).
+male(bob).
+
+female(susan).
+female(mary).
+female(linda).
+female(alice).

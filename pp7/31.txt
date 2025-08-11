@@ -1,0 +1,15 @@
+31 :
+
+<h2>Title Tag</h2>
+<p>The <code>&lt;title&gt;</code> tag defines the title of the webpage, which appears on the browser tab.</p>
+
+<h2>Anchor Tag</h2>
+<p>The anchor tag <code>&lt;a&gt;</code> is used to create hyperlinks.</p>
+<p>Example: <a href="https://www.example.com" title="Visit Example Site">Click here to visit Example.com</a></p>
+
+<h2>Other Useful Tags</h2>
+<ul>
+  <li><code>&lt;h1&gt;</code> to <code>&lt;h6&gt;</code> — Headings</li>
+  <li><code>&lt;p&gt;</code> — Paragraph</li>
+  <li><code>&lt;img&gt;</code> — Image tag with <code>alt</code> attribute for accessibility</li>
+</ul>

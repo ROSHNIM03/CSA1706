@@ -1,0 +1,38 @@
+22 :  Prolog Program: Bird Can Fly or Not
+
+% --- Facts: bird(Name), can_fly(Name) or cannot_fly(Name)
+
+% List of birds
+bird(sparrow).
+bird(penguin).
+bird(ostrich).
+bird(eagle).
+bird(bat).     % Technically not a bird, but useful for testing logic
+bird(parrot).
+bird(kiwi).
+
+% Birds that can fly
+can_fly(sparrow).
+can_fly(eagle).
+can_fly(parrot).
+
+% Birds that cannot fly
+cannot_fly(penguin).
+cannot_fly(ostrich).
+cannot_fly(kiwi).
+
+% Rule: A bird can fly if it's listed in can_fly
+can_bird_fly(Bird) :-
+    can_fly(Bird),
+    format('Yes, ~w can fly.~n', [Bird]).
+
+% Rule: A bird cannot fly if it's listed in cannot_fly
+can_bird_fly(Bird) :-
+    cannot_fly(Bird),
+    format('No, ~w cannot fly.~n', [Bird]).
+
+% Rule: Handle unknown cases
+can_bird_fly(Bird) :-
+    \+ can_fly(Bird),
+    \+ cannot_fly(Bird),
+    format('Flight ability of ~w is unknown or it is not a bird.~n', [Bird]).

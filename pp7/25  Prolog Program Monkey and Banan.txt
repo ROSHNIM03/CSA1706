@@ -1,0 +1,86 @@
+25 : Prolog Program: Monkey and Banana Problem
+
+% --- Initial state ---
+% state(MonkeyPos, BoxPos, HasBanana, MonkeyHeight)
+% MonkeyPos and BoxPos are places like floor, under_box, etc.
+% HasBanana = yes/no
+% MonkeyHeight = floor or on_box
+
+% The monkey wants to get the banana, which is hanging at a fixed location.
+
+% Possible positions
+position(room).
+position(box).
+
+% Initial state
+initial_state(state(floor, middle_of_room, no, floor)).
+
+% Goal state
+goal_state(state(_, _, yes, _)).
+
+% Actions
+
+% move(MonkeyPos, NewPos)
+move(state(MonkeyPos, BoxPos, HasBanana, MonkeyHeight),
+     state(NewPos, BoxPos, HasBanana, floor)) :-
+    position(MonkeyPos),
+    position(NewPos),
+    MonkeyPos \= NewPos,
+    MonkeyHeight = floor.
+
+% push_box(MonkeyPos, BoxPos, NewBoxPos)
+push_box(state(MonkeyPos, BoxPos, HasBanana, floor),
+         state(NewPos, NewPos, HasBanana, floor)) :-
+    position(MonkeyPos),
+    position(BoxPos),
+    position(NewPos),
+    MonkeyPos = BoxPos,
+    MonkeyPos \= NewPos.
+
+% climb_box
+climb_box(state(MonkeyPos, BoxPos, HasBanana, floor),
+          state(MonkeyPos, BoxPos, HasBanana, on_box)) :-
+    MonkeyPos = BoxPos.
+
+% climb_down_box
+climb_down_box(state(MonkeyPos, BoxPos, HasBanana, on_box),
+               state(MonkeyPos, BoxPos, HasBanana, floor)).
+
+% grab_banana
+grab_banana(state(MonkeyPos, BoxPos, no, on_box),
+            state(MonkeyPos, BoxPos, yes, on_box)) :-
+    MonkeyPos = BoxPos,
+    MonkeyPos = middle_of_room.
+
+% --- Planner ---
+
+% plan(CurrentState, GoalState, VisitedStates, Moves)
+plan(State, State, _, []).
+plan(CurrentState, GoalState, Visited, [Action|Moves]) :-
+    (   move(CurrentState, NextState),
+        Action = move
+    ;   push_box(CurrentState, NextState),
+        Action = push_box
+    ;   climb_box(CurrentState, NextState),
+        Action = climb_box
+    ;   climb_down_box(CurrentState, NextState),
+        Action = climb_down_box
+    ;   grab_banana(CurrentState, NextState),
+        Action = grab_banana
+    ),
+    \+ member(NextState, Visited),
+    plan(NextState, GoalState, [NextState|Visited], Moves).
+
+% --- Run example ---
+
+run :-
+    initial_state(Initial),
+    goal_state(Goal),
+    plan(Initial, Goal, [Initial], Moves),
+    write('Moves to get banana: '), nl,
+    print_moves(Moves).
+
+print_moves([]).
+print_moves([H|T]) :-
+    write(H), nl,
+    print_moves(T).

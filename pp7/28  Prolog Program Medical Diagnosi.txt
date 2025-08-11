@@ -1,0 +1,36 @@
+28 : Prolog Program: Medical Diagnosis
+
+% --- Diseases and their symptoms ---
+disease(flu, [fever, cough, headache, sore_throat]).
+disease(cold, [cough, sneezing, runny_nose]).
+disease(malaria, [fever, chills, sweating, headache]).
+disease(dengue, [fever, headache, rash, joint_pain]).
+disease(covid19, [fever, cough, fatigue, loss_of_taste, difficulty_breathing]).
+
+% --- Check if all symptoms are present ---
+has_all_symptoms([], _).
+has_all_symptoms([Symptom|Rest], Symptoms) :-
+    member(Symptom, Symptoms),
+    has_all_symptoms(Rest, Symptoms).
+
+% --- Diagnosis rule ---
+diagnose(Disease, Symptoms) :-
+    disease(Disease, DiseaseSymptoms),
+    has_all_symptoms(DiseaseSymptoms, Symptoms).
+
+% --- Interactive diagnosis ---
+diagnose :-
+    write('Enter symptoms one by one, end with "done."'), nl,
+    read_symptoms(Symptoms),
+    findall(Disease, diagnose(Disease, Symptoms), Diseases),
+    (   Diseases = [] -> write('No diagnosis found.'); 
+        write('Possible diseases: '), write(Diseases)
+    ).
+
+% --- Read symptoms until 'done.' is entered ---
+read_symptoms(Symptoms) :-
+    read(Symptom),
+    ( Symptom == done -> Symptoms = []
+    ; Symptoms = [Symptom|Rest],
+      read_symptoms(Rest)
+    ).

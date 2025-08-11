@@ -1,0 +1,28 @@
+30 :  Prolog Program: Backward Chaining Example
+
+% --- Facts ---
+
+mammal(dog).
+mammal(cat).
+bird(sparrow).
+bird(eagle).
+
+can_fly(sparrow).
+can_fly(eagle).
+
+% --- Rules ---
+
+animal(X) :- mammal(X).
+animal(X) :- bird(X).
+
+flying_animal(X) :-
+    animal(X),
+    can_fly(X).
+
+% --- Sample Queries ---
+
+% Check if X is an animal
+% ?- animal(dog).
+
+% Find all animals that can fly
+% ?- flying_animal(X).
