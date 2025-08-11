@@ -1,0 +1,20 @@
+19:  Prolog Program: STUDENT – TEACHER – SUBJECT – CODE
+
+% --- Subject Code to Subject Name ---
+subject(cs101, computer_science).
+subject(ma102, mathematics).
+subject(ph103, physics).
+subject(ch104, chemistry).
+
+% --- Students and their enrolled subject codes ---
+student(john, cs101).
+student(alice, ma102).
+student(bob, cs101).
+student(claire, ph103).
+student(david, ch104).
+
+% --- Teachers and the subject codes they teach ---
+teacher(mr_smith, cs101).
+teacher(ms_jones, ma102).
+teacher(dr_brown, ph103).
+teacher(ms_white, ch104).

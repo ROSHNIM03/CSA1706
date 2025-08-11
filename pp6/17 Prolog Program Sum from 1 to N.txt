@@ -1,0 +1,11 @@
+17: Prolog Program: Sum from 1 to N
+
+% Base case: the sum from 1 to 1 is 1.
+sum(1, 1).
+
+% Recursive case: sum(N, Total)
+sum(N, Total) :-
+    N > 1,
+    N1 is N - 1,
+    sum(N1, SubTotal),
+    Total is SubTotal + N.

@@ -1,0 +1,78 @@
+16:Python Program: Feedforward Neural Network (from Scratch)
+
+
+import numpy as np
+
+# Activation function and its derivative
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+def sigmoid_derivative(x):
+    return x * (1 - x)
+
+# Input dataset (4 samples, 2 features each)
+X = np.array([
+    [0, 0],
+    [0, 1],
+    [1, 0],
+    [1, 1]
+])
+
+# Output labels for XOR logic
+y = np.array([
+    [0],
+    [1],
+    [1],
+    [0]
+])
+
+# Set seed for reproducibility
+np.random.seed(42)
+
+# Network architecture
+input_layer_neurons = 2   # 2 features
+hidden_layer_neurons = 4  # You can change this
+output_neurons = 1        # Binary output
+
+# Weights and biases initialization
+wh = np.random.uniform(size=(input_layer_neurons, hidden_layer_neurons))   # Input -> Hidden
+bh = np.random.uniform(size=(1, hidden_layer_neurons))
+
+wo = np.random.uniform(size=(hidden_layer_neurons, output_neurons))        # Hidden -> Output
+bo = np.random.uniform(size=(1, output_neurons))
+
+# Training parameters
+epochs = 10000
+learning_rate = 0.1
+
+# Training process
+for epoch in range(epochs):
+    # ---- Forward Propagation ----
+    hidden_input = np.dot(X, wh) + bh
+    hidden_output = sigmoid(hidden_input)
+
+    final_input = np.dot(hidden_output, wo) + bo
+    final_output = sigmoid(final_input)
+
+    # ---- Backpropagation ----
+    error = y - final_output
+    d_output = error * sigmoid_derivative(final_output)
+
+    error_hidden = d_output.dot(wo.T)
+    d_hidden = error_hidden * sigmoid_derivative(hidden_output)
+
+    # ---- Updating weights and biases ----
+    wo += hidden_output.T.dot(d_output) * learning_rate
+    bo += np.sum(d_output, axis=0, keepdims=True) * learning_rate
+
+    wh += X.T.dot(d_hidden) * learning_rate
+    bh += np.sum(d_hidden, axis=0, keepdims=True) * learning_rate
+
+    # Print loss every 1000 epochs
+    if epoch % 1000 == 0:
+        loss = np.mean(np.square(error))
+        print(f"Epoch {epoch}, Loss: {loss:.4f}")
+
+# Final predictions
+print("\nFinal output after training:")
+print(np.round(final_output, 3))

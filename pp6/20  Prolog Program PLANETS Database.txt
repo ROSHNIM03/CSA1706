@@ -1,0 +1,14 @@
+20 : Prolog Program: PLANETS Database
+
+
+% --- planet(Name, DistanceFromSun_MillionKM, Diameter_KM, Moons, HasRings) ---
+
+planet(mercury,   57.9,   4879,   0,  no).
+planet(venus,     108.2,  12104,  0,  no).
+planet(earth,     149.6,  12756,  1,  no).
+planet(mars,      227.9,  6792,   2,  no).
+planet(jupiter,   778.5,  142984, 79, yes).
+planet(saturn,    1434,   120536, 83, yes).
+planet(uranus,    2871,   51118,  27, yes).
+planet(neptune,   4495,   49528,  14, yes).
+planet(pluto,     5906,   2376,   5,  no).  % Dwarf planet
