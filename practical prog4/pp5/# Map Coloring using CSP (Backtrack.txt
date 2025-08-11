@@ -1,0 +1,42 @@
+# Map Coloring using CSP (Backtracking)
+
+# Define the map as a graph
+graph = {
+    'WA': ['NT', 'SA'],
+    'NT': ['WA', 'SA', 'Q'],
+    'SA': ['WA', 'NT', 'Q', 'NSW', 'V'],
+    'Q':  ['NT', 'SA', 'NSW'],
+    'NSW': ['Q', 'SA', 'V'],
+    'V':  ['SA', 'NSW'],
+    'T':  []
+}
+
+# Available colors
+colors = ['Red', 'Green', 'Blue']
+
+# Store assigned colors
+solution = {}
+
+def is_safe(state, color):
+    for neighbor in graph[state]:
+        if neighbor in solution and solution[neighbor] == color:
+            return False
+    return True
+
+def csp_map_coloring(states):
+    if len(solution) == len(states):
+        return True
+
+    state = [s for s in states if s not in solution][0]
+    for color in colors:
+        if is_safe(state, color):
+            solution[state] = color
+            if csp_map_coloring(states):
+                return True
+            del solution[state]
+    return False
+
+if csp_map_coloring(list(graph.keys())):
+    print("Solution:", solution)
+else:
+    print("No solution found.")

@@ -1,0 +1,42 @@
+from itertools import permutations
+
+# Distance matrix
+# 0  means same city
+# Example: dist[0][1] = 10 means distance from city 0 to city 1 is 10
+dist = [
+    [0, 10, 15, 20],
+    [10, 0, 35, 25],
+    [15, 35, 0, 30],
+    [20, 25, 30, 0]
+]
+
+# Number of cities
+n = len(dist)
+
+# All cities except starting city 0
+cities = list(range(1, n))
+
+min_cost = float('inf')
+best_path = None
+
+# Try all permutations of the cities
+for perm in permutations(cities):
+    cost = 0
+    current = 0  # start at city 0
+    
+    # Visit cities in order
+    for next_city in perm:
+        cost += dist[current][next_city]
+        current = next_city
+    
+    # Return to start
+    cost += dist[current][0]
+    
+    # Check if this is the best
+    if cost < min_cost:
+        min_cost = cost
+        best_path = (0,) + perm + (0,)
+
+# Print result
+print("Best Path:", best_path)
+print("Minimum Cost:", min_cost)
